@@ -1,11 +1,25 @@
 from __future__ import annotations
 
 
+class AliveList(list):
+
+    def __str__(self: AliveList) -> str:
+        return "[" + ", ".join(repr(animal) for animal in self) + "]"
+
+    # def __repr__(
+    #         self: AliveList[Animal]
+    # ) -> str:
+    #     return str(Animal.get_alive_status())
+
+# def print(alive: Animal.alive) -> None:
+#     print(Animal.get_alive_status())
+
+
 class Animal:
-    alive: list[Animal] = []
+    alive: AliveList = AliveList()
 
     def __init__(
-            self,
+            self: Animal,
             name: str,
             health:
             int = 100
@@ -23,17 +37,17 @@ class Animal:
 
 class Herbivore(Animal):
 
-    def hide(self) -> None:
+    def hide(self: Animal) -> None:
         self.hidden = not self.hidden
 
 
 class Carnivore(Animal):
 
-    @staticmethod
     def bite(
+            self: Animal,
             herbivore: Herbivore
     ) -> None:
         if isinstance(herbivore, Herbivore) and not herbivore.hidden:
             herbivore.health -= 50
-            if herbivore.health <= 0:
+            if herbivore.health <= 0 and herbivore in Animal.alive:
                 Animal.alive.remove(herbivore)
